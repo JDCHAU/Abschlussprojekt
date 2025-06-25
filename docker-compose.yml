@@ -80,9 +80,9 @@ services:
       - slurm_jobdir:/data
       - var_log_slurm:/var/log/slurm
       - entry:/usr/local/bin
-    expose:
-      - "6817"
-      - "6820"
+    ports:
+    - "16817:6817"
+    - "6820"
     depends_on:
       - "slurmdbd"
       - "elasticsearch"
