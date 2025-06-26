@@ -1,4 +1,4 @@
-FROM rockylinux:9
+FROM nvidia/cuda:12.9.1-base-rockylinux9
 
 LABEL org.opencontainers.image.source="https://github.com/sckyzo/slurm-docker-cluster" \
       org.opencontainers.image.title="Custom Slurm Docker Cluster" \
@@ -12,7 +12,7 @@ ARG USER=slurm
 ARG PUID=990
 ARG PGID=990 
 ARG GOSU_VERSION=1.17
-ARG SLURM_TAG=slurm-24-1-5
+ARG SLURM_TAG=slurm-24-11-5
 ARG RESTUID=995
 ARG RESTGID=995 
 
@@ -103,6 +103,7 @@ VOLUME /etc/slurm
 COPY conf_files/etc/slurm/slurm.conf /etc/slurm/slurm.conf
 COPY conf_files/etc/slurm/slurmdbd.conf /etc/slurm/slurmdbd.conf
 COPY conf_files/etc/slurm/cgroup.conf /etc/slurm/cgroup.conf
+COPY conf_files/etc/slurm/gres.conf /etc/slurm/gres.conf
 
 RUN set -x \
     && chown $USER:$USER /etc/slurm/slurmdbd.conf \
@@ -134,5 +135,10 @@ RUN ./configure \
   && make -j$(nproc) \
   && cp .libs/jobcomp_elasticsearch.so /usr/lib64/slurm/
 
+
+RUN mkdir -p /usr/lib/x86_64-linux-gnu /lib/x86_64-linux-gnu \
+    && echo "/usr/lib/x86_64-linux-gnu" > /etc/ld.so.conf.d/nvidia-debian-path.conf \
+    && echo "/lib/x86_64-linux-gnu" >> /etc/ld.so.conf.d/nvidia-debian-path.conf \
+    && ldconfig
 
 CMD ["slurmdbd"]

@@ -327,7 +327,133 @@ If you don't need this feature, modify the dockerfile and yml.
 
 Note: slurm's plugin does not provide timestamps, http://localhost:3000/, Click on the logo in the upper left -> Data Source -> select Elasticsearch -> Time field name, select any one except @timestamp. 
 
+# NVIDIA-Driver Supported
 
+1. FROM nvidia/cuda:12.9.1-base-rockylinux9 build image
+
+2. install tool on host machine
+    https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+
+3. test nvidia-smi in docker 
+    https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/sample-workload.html
+
+4.  example from part of compose.yml
+
+       slurmctld:
+           image: slurm-docker-cluster:24-11-5_GPU
+           runtime: nvidia
+           command: ["slurmctld"]
+           container_name: slurmctld
+           hostname: slurmctld
+           environment: 
+             PUID: 990
+             GUID: 990
+             NVIDIA_VISIBLE_DEVICES: all
+           volumes:
+             - etc_munge:/etc/munge
+             - etc_slurm:/etc/slurm
+             - slurm_jobdir:/data
+             - var_log_slurm:/var/log/slurm
+             - entry:/usr/local/bin
+           deploy:
+             resources:
+               reservations:
+                 devices:
+                   - driver: nvidia
+                     capabilities: [gpu]  
+             
+           ports:
+           - "16817:6817"
+           - "6820"
+           depends_on:
+             - "slurmdbd"
+             - "elasticsearch"
+           networks:
+             - slurm_net
+
+5. proof:
+
+   ``` shell
+   [root@compute1 dev]# ls /dev | grep -i nvidia
+   nvidia-caps
+   nvidia-modeset
+   nvidia-uvm
+   nvidia-uvm-tools
+   nvidia0
+   nvidiactl
+   
+   ```
+
+   nvidia[num] is your GPU.
+   
+   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   
+   if your host OS is debian or ubuntu but container OS is RHEL, maybe need modify  
+   
+   /etc/nvidia-container-runtime/config.toml
+   
+   ```shell
+   #++++++++++++++++++++++++++++
+   [host-files]
+   "/usr/lib64" = "/usr/lib/x86_64-linux-gnu"
+   "/lib64" = "/lib/x86_64-linux-gnu"
+   ```
+   
+   /etc/docker/daemon.json
+   
+   {
+     "default-runtime": "nvidia",
+     "runtimes": {
+       "nvidia": {
+         "path": "nvidia-container-runtime",
+         "runtimeArgs": []
+       }
+     }
+   }
+
+# Apptainer
+
+tutorium from https://apptainer.org/docs/admin/main/installation.html
+
+1. test on compute1 node:
+
+	```shell
+	dnf install -y epel-release
+	dnf install -y apptainer
+	apptainer --version
+	```
+
+​	should see  `apptainer version 1.4.1-1.el9`
+
+2. add gres.conf
+
+   ```shell 
+   echo NodeName=compute1 Name=gpu Type=nvidia File=/dev/nvidia0 >> /etc/slurm/gres.conf
+   ```
+
+   or
+   
+   ```shell
+   AutoDetect=nvidia 
+   ```
+   
+   
+
+3. modify slurm.conf 
+
+   GresTypes=gpu
+
+   NodeName=xxx ... Gres=gpu
+
+   
+
+4.  Back to **slurmctld**! Refresh compute node! 
+
+   ```shell
+   scontrol update NodeName=compute1 State=RESUME
+   ```
+
+   
 
 ## Credit
 
@@ -335,6 +461,6 @@ This is a fork of Giovanni Torres' github repo : https://github.com/giovtorres/s
 
 and of SckyzO's github repo: https://github.com/SckyzO/slurm-docker-cluster
 
-I upgraded the slurm level to 24.11.5 and added slurmrestd, elasticsearch, grafana.
+I upgraded the slurm level to 24.11.5 and added slurmrestd, elasticsearch, grafana and GPU-detection is now supported.
 
 Many of the error-prone steps I compiled completely manually to make the build clearer.
