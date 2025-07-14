@@ -1,6 +1,0 @@
-1. install tool on host machine
-https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
-
-2. test nvidia-smi in docker 
-https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/sample-workload.html
-

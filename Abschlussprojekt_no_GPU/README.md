@@ -327,6 +327,8 @@ If you don't need this feature, modify the dockerfile and yml.
 
 Note: slurm's plugin does not provide timestamps, http://localhost:3000/, Click on the logo in the upper left -> Data Source -> select Elasticsearch -> Time field name, select any one except @timestamp. 
 
+# If you need the login node, see the readme in the previous directory.
+
 
 
 ## Credit

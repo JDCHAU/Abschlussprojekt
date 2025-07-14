@@ -14,6 +14,26 @@ volumes:
   es_logs:
 ## SERVICES
 services:
+  # traefik:
+  #   image: traefik:2.11
+  #   container_name: traefik
+  #   restart: unless-stopped
+  #   command:
+  #     - --providers.docker=true
+  #     - --providers.docker.exposedbydefault=false
+  #     - --entrypoints.web.address=:80
+  #     - --api.dashboard=true
+  #     - --api.insecure=true
+  #     - --log.level=INFO
+    # ports:
+    #   - "80:80"
+    #   - "8080:8080"
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock:ro
+    # networks:
+    #   - slurm_net
+
+
   slurm-base:
     image: slurm-docker-cluster:24-11-5_GPU
     build:
@@ -117,8 +137,10 @@ services:
       - var_log_slurm:/var/log/slurm
       - entry:/usr/local/bin
       
-    expose:
+    ports:
       - "6818"
+      - "20000-20100:20000-20100"
+
     depends_on:
       - "slurmctld"
     networks:
@@ -176,8 +198,7 @@ services:
       - grafana_lib:/var/lib/grafana
     networks:
       - slurm_net
-      
-
+    
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:9.0.2
     container_name: elasticsearch
@@ -195,6 +216,28 @@ services:
     volumes: 
       - es_logs:/var/log/slurm/elasticsearch
 
+    networks:
+      - slurm_net
+
+  login:
+    image: login_server:latest
+    container_name: login
+    hostname: login             
+    # stdin_open: true
+    # tty: true
+    privileged: true            
+    #environment:
+      # PUID: 990
+      # GUID: 990
+    ports:
+      - "2222:22"
+    volumes:
+      - etc_munge:/etc/munge:ro
+      - etc_slurm:/etc/slurm:ro
+      - slurm_jobdir:/data
+      - entry:/usr/local/bin:ro
+    depends_on:
+      - slurmctld
     networks:
       - slurm_net
 
