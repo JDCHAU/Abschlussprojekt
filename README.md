@@ -463,13 +463,13 @@ see ./login_sshd_server/README.md
 
 for general purpose
 
-![](/home/jd/桌面/slurmindocker_without login.svg)
+![](slurmindocker_without login.svg)
 
 ---
 
 more safety
 
-![](/home/jd/桌面/slurmindocker_login.svg)
+![](slurmindocker_login.svg)
 
 ----
 
@@ -477,7 +477,7 @@ especially for DUUI
 
 
 
-![](/home/jd/桌面/slurm_in_docker_duui.svg)
+![](slurm_in_docker_duui.svg)
 
 ## Credit
 
