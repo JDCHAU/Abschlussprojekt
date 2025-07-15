@@ -463,21 +463,29 @@ see ./login_sshd_server/README.md
 
 for general purpose
 
-![](slurmindocker_without login.svg)
+<p align="center">
+  <img src="slurmindocker_without login.svg" width="1000px" height="530px" >
+</p>
 
 ---
 
 more safety
 
-![](slurmindocker_login.svg)
+<p align="center">
+  <img src="slurmindocker_login.svg" width="1000px" height="530px">
+</p>
+
+
 
 ----
 
 especially for DUUI
 
+<p align="center">
+  <img src="slurm_in_docker_duui.svg" width="1000px" height="530px">
+</p>
 
 
-![](slurm_in_docker_duui.svg)
 
 ## Credit
 
