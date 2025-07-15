@@ -133,6 +133,6 @@ RUN ./configure \
   && cd src/plugins/jobcomp/elasticsearch \
   && make -j$(nproc) \
   && cp .libs/jobcomp_elasticsearch.so /usr/lib64/slurm/
-
+RUN dnf install -y epel-release apptainer socat
 
 CMD ["slurmdbd"]

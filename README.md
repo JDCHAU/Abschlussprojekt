@@ -459,6 +459,26 @@ tutorium from https://apptainer.org/docs/admin/main/installation.html
 
 see ./login_sshd_server/README.md
 
+# Architeckture
+
+for general purpose
+
+![](/home/jd/桌面/slurmindocker_without login.svg)
+
+---
+
+more safety
+
+![](/home/jd/桌面/slurmindocker_login.svg)
+
+----
+
+especially for DUUI
+
+
+
+![](/home/jd/桌面/slurm_in_docker_duui.svg)
+
 ## Credit
 
 This is a fork of Giovanni Torres' github repo : https://github.com/giovtorres/slurm-docker-cluster
@@ -468,3 +488,11 @@ and of SckyzO's github repo: https://github.com/SckyzO/slurm-docker-cluster
 I upgraded the slurm level to 24.11.5 and added slurmrestd, elasticsearch, grafana and GPU-detection is now supported.
 
 Many of the error-prone steps I compiled completely manually to make the build clearer.
+
+Powered by Lucidchart
+
+Pictures from：
+
+https://github.com/texttechnologylab/DockerUnifiedUIMAInterface
+
+https://flatirons.com/blog/what-is-spring-boot-in-java/
