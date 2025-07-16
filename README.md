@@ -485,9 +485,14 @@ more safety
 especially for DUUI
 
 <p align="center">
-  <img src="slurm_in_docker_duui.svg" width="1000px" height="530px">
+  <img src="slurm_in_docker_duui.svg" width="1200px" height="600px">
 </p>
 
+mealy-automat
+
+<p align="center">
+  <img src="mealy_slurm.svg" width="1800px" height="900px">
+</p>
 
 
 ## Credit

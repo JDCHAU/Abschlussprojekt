@@ -76,7 +76,7 @@ services:
       - etc_slurm:/etc/slurm
       - var_log_slurm:/var/log/slurm
       - entry:/usr/local/bin
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro  
+      #- /sys/fs/cgroup:/sys/fs/cgroup:ro  
     expose:
       - "6819"
     depends_on:
@@ -103,7 +103,7 @@ services:
       - slurm_jobdir:/data
       - var_log_slurm:/var/log/slurm
       - entry:/usr/local/bin
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro  
+      #- /sys/fs/cgroup:/sys/fs/cgroup:ro  
     deploy:
       resources:
         reservations:
@@ -140,10 +140,10 @@ services:
       - slurm_jobdir:/data
       - var_log_slurm:/var/log/slurm
       - entry:/usr/local/bin
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw 
+      #- /sys/fs/cgroup:/sys/fs/cgroup:rw 
 
-    pid: host
-    cgroup: host 
+    #pid: host
+    #cgroup: host 
     ports:
       - "6818"
       - "20000-20100:20000-20100"
@@ -188,7 +188,7 @@ services:
       - etc_munge:/etc/munge
       - etc_slurm:/etc/slurm
       - entry:/usr/local/bin
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      #- /sys/fs/cgroup:/sys/fs/cgroup:ro
     
     networks:
       - slurm_net
@@ -242,10 +242,10 @@ services:
     ports:
       - "2222:22"
     volumes:
-      - etc_munge:/etc/munge:ro
-      - etc_slurm:/etc/slurm:ro
+      - etc_munge:/etc/munge
+      - etc_slurm:/etc/slurm
       - slurm_jobdir:/data
-      - entry:/usr/local/bin:ro
+      - entry:/usr/local/bin
     depends_on:
       - slurmctld
     networks:
