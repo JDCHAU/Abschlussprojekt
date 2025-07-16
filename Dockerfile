@@ -141,5 +141,11 @@ RUN mkdir -p /usr/lib/x86_64-linux-gnu /lib/x86_64-linux-gnu \
     && echo "/lib/x86_64-linux-gnu" >> /etc/ld.so.conf.d/nvidia-debian-path.conf \
     && ldconfig
 
+RUN dnf install -y dbus-devel libbpf-devel hwloc-devel gcc make \
+    && ./configure --enable-debug --prefix=/usr --sysconfdir=/etc/slurm  --with-mysql_config=/usr/bin  --libdir=/usr/lib64 --with-cgroup=v2 \
+    && cd src/plugins/cgroup/v2 \
+    && make \
+    && cp .libs/cgroup_v2.so /usr/lib64/slurm/
+
 RUN dnf install -y epel-release apptainer socat
 CMD ["slurmdbd"]
