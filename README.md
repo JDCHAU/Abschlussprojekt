@@ -163,17 +163,20 @@ see which version of cgroup on your host-machine:
 if v1: 
 
 ```bash
-./configure --enable-debug --prefix=/usr --sysconfdir=/etc/slurm  --with-mysql_config=/usr/bin  --libdir=/usr/lib64 --with-cgroup=v1\
+./configure --enable-debug --prefix=/usr --sysconfdir=/etc/slurm  --with-mysql_config=/usr/bin  --libdir=/usr/lib64 --with-cgroup=v1
 ```
 
 if v2: 
 
 ```bash
-./configure --enable-debug --prefix=/usr --sysconfdir=/etc/slurm  --with-mysql_config=/usr/bin  --libdir=/usr/lib64 --with-cgroup=v2\
 # To make sure this code is in your Dockerfile
 dnf install -y dbus-devel libbpf-devel hwloc-devel gcc make
-cp src/plugins/cgroup/v2/.libs/cgroup_v2.so /usr/lib64/slurm/
 
+./configure --enable-debug --prefix=/usr --sysconfdir=/etc/slurm  --with-mysql_config=/usr/bin  --libdir=/usr/lib64 --with-cgroup=v2
+
+cd src/plugins/cgroup/v2
+make  
+cp .libs/cgroup_v2.so /usr/lib64/slurm/
 ```
 
 Don't forget to modify slurm.conf and cgroup.conf files, see more: https://slurm.schedmd.com/cgroups.html
