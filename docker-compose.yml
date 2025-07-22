@@ -43,6 +43,8 @@ services:
         SLURM_TAG: slurm-24-11-5   
     volumes:
       - var_lib_mysql:/var/lib/mysql
+    environment:
+      - TZ=Europe/Berlin
     networks:
       - slurm_net      
 
@@ -71,6 +73,7 @@ services:
     environment: 
       PUID: 990
       GUID: 990
+      TZ: Europe/Berlin
     volumes:
       - etc_munge:/etc/munge
       - etc_slurm:/etc/slurm
@@ -81,7 +84,6 @@ services:
       - "6819"
     depends_on:
       - mysql
-    
     networks:
       - slurm_net
 
@@ -97,6 +99,8 @@ services:
       PUID: 990
       GUID: 990
       NVIDIA_VISIBLE_DEVICES: all
+      TZ: Europe/Berlin
+
     volumes:
       - etc_munge:/etc/munge
       - etc_slurm:/etc/slurm
@@ -134,12 +138,15 @@ services:
       PUID: 990
       GUID: 990
       NVIDIA_VISIBLE_DEVICES: all
+      TZ: Europe/Berlin
+
     volumes:
       - etc_munge:/etc/munge
       - etc_slurm:/etc/slurm
       - slurm_jobdir:/data
       - var_log_slurm:/var/log/slurm
       - entry:/usr/local/bin
+      - ./sif_pool:/sif_pool:rw
       #- /sys/fs/cgroup:/sys/fs/cgroup:rw 
 
     #pid: host
@@ -189,7 +196,8 @@ services:
       - etc_slurm:/etc/slurm
       - entry:/usr/local/bin
       #- /sys/fs/cgroup:/sys/fs/cgroup:ro
-    
+    environment: 
+      TZ: Europe/Berlin
     networks:
       - slurm_net
 
@@ -203,7 +211,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-
+      - TZ=Europe/Berlin
     volumes: 
       - grafana_lib:/var/lib/grafana
     networks:
@@ -216,7 +224,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
-
+      - TZ=Europe/Berlin
     ports: 
       - "9200:9200"
 
@@ -246,8 +254,11 @@ services:
       - etc_slurm:/etc/slurm
       - slurm_jobdir:/data
       - entry:/usr/local/bin
+      - ./sif_pool:/sif_pool:rw
     depends_on:
       - slurmctld
+    environment: 
+      - TZ=Europe/Berlin  
     networks:
       - slurm_net
 

@@ -1,0 +1,7 @@
+target/
+.idea/
+*.png
+*.pgf
+*.db
+*.iml
+Gemfile.lock
