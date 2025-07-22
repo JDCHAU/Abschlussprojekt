@@ -43,3 +43,4 @@ Icon
 **/__pycache__/
 *.py[cod]
 
+sif_pool/*.sif
