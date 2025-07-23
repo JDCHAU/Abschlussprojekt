@@ -105,8 +105,9 @@ services:
       - slurm_jobdir:/data
       - var_log_slurm:/var/log/slurm
       - entry:/usr/local/bin
-    expose:
+    ports:
       - "6818"
+      -"20000-20100:20000-20100"
     depends_on:
       - "slurmctld"
     networks:
